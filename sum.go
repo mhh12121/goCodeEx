@@ -18,14 +18,6 @@ const (
 
 func main() {
 
-	// i := 0
-	// defer fmt.Println(i)
-	// i++
-	// return
-	// f()
-	// fmt.Println("return normaly from 4")
-	// intputnums := []int{1, 2, 3, 4, 5}
-
 	// target := 5
 	// result := twoSum(intputnums, target)
 	// fmt.Println(result)
@@ -83,27 +75,6 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	return resListNode.Next
 }
 
-//recover and panic
-func f() {
-	defer func() {
-		if r := recover(); r != nil {
-			fmt.Println("Recovered in f", r)
-		}
-	}()
-	fmt.Println("Calling g.")
-	g(0)
-	fmt.Println("Returned normally from g.")
-}
-
-func g(i int) {
-	if i > 3 {
-		fmt.Println("Panicking!")
-		panic(fmt.Sprintf("%v", i))
-	}
-	defer fmt.Println("Defer in g", i)
-	fmt.Println("Printing in g", i)
-	g(i + 1)
-}
 func twoSum(nums []int, target int) []int {
 	// resNum := make(map[int]int)
 	// result := make([]int, 0)
