@@ -20,14 +20,14 @@ func maximumSubArr() {
 		if op[i] == "p" {
 			opnum = append(opnum, num[i])
 			min = findMin(num[i], min)
-			max = findMax(num[i], max)
+			max = FindMax(num[i], max)
 			result = append(result, max*min)
 		} else if op[i] == "o" {
 			if len(opnum) > 1 {
 				if min == num[i] {
-					// min = SearchMin()
+					// min = SearchMin()//todo
 				} else if max == num[i] {
-					// max = SearchMax()
+					// max = SearchMax()//todo
 				} else {
 					result = append(result, max*min) //do nothing
 				}
@@ -39,7 +39,7 @@ func maximumSubArr() {
 	}
 }
 
-func findMax(i, j int) int {
+func FindMax(i, j int) int {
 	if i > j {
 		return i
 	}
