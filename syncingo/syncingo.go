@@ -1,14 +1,14 @@
 package main
 
 //chan.close()
-// func fibonacci(n int, c chan int) {
-// 	x, y := 0, 1
-// 	for i := 0; i < n; i++ {
-// 		c <- x
-// 		x, y = y, x+y
-// 	}
-// 	close(c)
-// }
+func fibonacci(n int, c chan int) {
+	x, y := 0, 1
+	for i := 0; i < n; i++ {
+		c <- x
+		x, y = y, x+y
+	}
+	close(c)
+}
 
 // func main() {
 // 	s := time.Now()
@@ -36,17 +36,19 @@ package main
 
 //-------------------------
 func main() {
-	c1 := make(chan int, 2)
-	c2 := make(chan int, 2)
+	// c1 := make(chan int, 2)
+	// c2 := make(chan int, 2)
 	maximum := 5
 	go func() {
 		for i := 0; i < maximum; i++ {
-			
+
 		}
 	}()
 
-	fibonacci()
+	// fibonacci()
 }
-func fibonacci() {
 
-}
+//another
+// func fibonacci() {
+
+// }

@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 //recover and panic
 func f() {
@@ -17,8 +19,12 @@ func main() {
 	i := 0
 	defer fmt.Println(i)
 	i++
-	return
 	f()
+	return
+
+	//---------------panic zero!!!!----------
+	// var m map[string]string
+	// m["do"] = "yes"
 
 }
 func g(i int) {

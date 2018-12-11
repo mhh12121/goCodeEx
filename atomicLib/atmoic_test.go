@@ -14,10 +14,11 @@ func Test_atmoicChange(t *testing.T) {
 	fmt.Println(value)
 }
 func SetValue(delta int32) {
-
-	v := value
-	if atomic.CompareAndSwapInt32(&value, v, (v + delta)) {
-
+	for {
+		v := value
+		if atomic.CompareAndSwapInt32(&value, v, (v + delta)) {
+			break
+		}
 	}
 
 }

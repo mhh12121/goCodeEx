@@ -51,7 +51,7 @@ func buddyStrings(A string, B string) bool {
 		}
 
 	}
-	if (count == 0 && change) || (!change) {
+	if (count == 0 && change) || (!change && count != 2) {
 		return false
 	}
 

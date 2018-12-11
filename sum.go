@@ -31,9 +31,7 @@ func main() {
 	// addTwoNumbers(l1, l2)
 	//------------------
 	// fmt.Println(a, b, c, d, e, x)
-	//---------------panic zero!!!!----------
-	// var m map[string]string
-	// m["do"] = "yes"
+
 	fmt.Println(a, b, c, x)
 }
 
