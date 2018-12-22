@@ -32,6 +32,7 @@ func buyItems() {
 	result := make([]int, len(store))
 	j := 0
 	for i := 0; i < len(store); i++ {
+		result
 		for j < allmoney {
 			// j = findMax(result[i], result[i-value[i-1]]+value[i]) //already choose ith item: result[j-value[i-1]]+value[i]
 			j += value[i]

@@ -4,6 +4,7 @@ func main() {
 
 }
 
+//todo
 //give operation ["p","p","p","o"] and num[1,2,3,1]
 //p=push, o= pop
 //after every operation, save the num's maximum*minimum value in result
