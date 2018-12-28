@@ -90,7 +90,7 @@ func findKthLargestQ(nums []int, k int) int {
 		}
 	}
 	return nums[k]
-}
+} 
 
 // func partitionQ(nums []int,low int,high int){
 
