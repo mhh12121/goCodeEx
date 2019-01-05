@@ -14,6 +14,9 @@ func main() {
 }
 func formString(A, B int) string {
 	res := make([]byte, 0)
+	i := 1
+	j := 1
+	fmt.Println(i ^ j)
 
 	return string(res[:])
 }
