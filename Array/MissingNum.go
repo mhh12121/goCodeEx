@@ -1,7 +1,8 @@
 package main
 
 func main() {
-
+	tmp := []int{3, 2, 1, 5, 6, 4}
+	findKthLargest(tmp, 2)
 }
 
 //Bitwise ???? pending
@@ -17,5 +18,5 @@ func missingNum(nums []int) int {
 
 //Missing Positive Nums
 func missingPositiveNum(nums []int) int {
-
+	return 0
 }

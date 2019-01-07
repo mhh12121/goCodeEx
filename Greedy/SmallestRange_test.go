@@ -20,8 +20,8 @@ func SmallestRange(A []int, K int) int {
 	min := A[0]
 	max := A[len(A)-1]
 	ans := max - min
-	for i := 0; i < len(A); i++ {
-		min = FindMin(A[0]+2*K, A[i+1]) //A[0]+2K: min of the first half; A[i+1]: min of the second half
+	for i := 0; i < len(A)-1; i++ {
+		min = FindMin(A[0]+2*K, A[i+1]) //A[0]+2K: min of the first half; A[i]: min of the second half
 		max = FindMax(A[i]+2*K, max)    //A[i]+2K: max of the first half; max: max of the second half
 		ans = FindMin(ans, max-min)
 	}
