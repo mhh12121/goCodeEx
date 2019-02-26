@@ -8,7 +8,7 @@ type t struct {
 }
 
 func main() {
-	// prices := []int{1, 2, 3, 0, 2}
+	prices := []int{7, 1, 5, 3, 6, 4}
 	// fmt.Println("best Profit:", bestTime_stateMachine(prices))
 
 	//---------slidewindow-----------------
@@ -24,11 +24,13 @@ func main() {
 
 	//-------------lettercasePermutation--------------
 	// s := make([]int, 0)
-	var tmp t
-	d := "a123b"
-	fmt.Println(letterCasePermutation(d))
-	do1(&tmp)
-	fmt.Println(tmp.age)
+	// var tmp t
+	// d := "a123b"
+	// fmt.Println(letterCasePermutation(d))
+	// do1(&tmp)
+	// fmt.Println(tmp.age)
+	res := maxProfit(prices)
+	fmt.Println(res)
 }
 func do1(stu *t) {
 
