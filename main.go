@@ -9,8 +9,26 @@ const (
 	b             //2
 	c             //4
 	x = iota      //3
+
 )
 
+// var i int
+
+func dosomething() func(int) int {
+	i := 1
+	return func(delta int) int {
+		i += delta
+		return i
+	}
+}
+func FibonacciClosure() func() int {
+	i, j := 0, 1
+	return func() int {
+		i, j = j, i+j
+		fmt.Println("number now", j)
+		return j
+	}
+}
 func main() {
 
 	// target := 5
@@ -31,4 +49,10 @@ func main() {
 
 	s := 'a'
 	fmt.Println(s)
+	// x := dosomething()
+	y := FibonacciClosure()
+	for i := 0; i < 5; i++ {
+		y()
+	}
+	// fmt.Println(x(1), x(2), x(3))
 }

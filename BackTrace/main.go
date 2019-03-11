@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 func main() {
 	a := []int{1, 2, 3}
@@ -12,4 +15,10 @@ func main() {
 	// fmt.Println(tm)
 	nextPermutation(a)
 	fmt.Println(a)
+
+	x := 4
+	// fmt.Println(solveNQueens(x))
+	start := time.Now()
+	fmt.Println(solveNQueens_Second(x))
+	fmt.Println(time.Since(start))
 }
