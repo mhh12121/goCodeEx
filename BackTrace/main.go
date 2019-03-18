@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -21,4 +22,6 @@ func main() {
 	start := time.Now()
 	fmt.Println(solveNQueens_Second(x))
 	fmt.Println(time.Since(start))
+	var str strings.Builder
+	str.WriteString("a")
 }
