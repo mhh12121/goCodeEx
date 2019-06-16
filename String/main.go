@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 func main() {
 	// A := 3
 	// B := 4
@@ -11,6 +9,9 @@ func main() {
 	// fmt.Println(y)
 	// ge := []string{"code", "cdoe", "odec", "frame", "framer"}
 	// groupAnagramsEasy(ge)
-	x := "abba"
-	fmt.Println(longestPalindrome_Dynamic(x))
+	// x := "abba"
+	// fmt.Println(longestPalindrome_Dynamic(x))
+	x := "aa"
+	y := "aa"
+	buddyStrings(x, y)
 }
