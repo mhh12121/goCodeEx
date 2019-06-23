@@ -70,10 +70,10 @@ func (brnode *BRNode) rotateLeft() (*BRNode, error) { //AVL
 		isLeft = brnode == parent.left
 	}
 	grandson := brnode.right.left
-	brnode.right.left = brnode   //右子节点的左子节点指向自己
-	brnode.parent = brnode.right //自己的父节点指向了自己的右节点，这样自己的右节点就取代了自己
-	brnode.right = grandson      //把暂存的放到自己的右节点处，因为自己的右节点已经取代了自己
-	// grandson.parent = brnode     //还要更新暂存的节点的父节点???
+	brnode.right.left = brnode   //右子节点的左子节点指向自己（断开7,8,连接2,8）
+	brnode.parent = brnode.right //自己的父节点指向了自己的右节点，这样自己的右节点就取代了自己（连接2,8）
+	brnode.right = grandson      //把暂存的放到自己的右节点处，因为自己的右节点已经取代了自己（连接2,7）
+
 	//是否是根节点
 	if parent == nil {
 		//更新新的根节点的父节点（即为nil）
@@ -119,11 +119,12 @@ func (brnode *BRNode) rotateRight() (*BRNode, error) { //AVL
 		isLeft = brnode == parent.left
 	}
 	//----------------主要区别在这里----------------
+
 	grandson := brnode.left.right
 	brnode.left.right = brnode  //右子节点的左子节点指向自己
 	brnode.parent = brnode.left //自己的父节点指向了自己的右节点，这样自己的右节点就取代了自己
 	brnode.left = grandson      //把暂存的放到自己的右节点处，因为自己的右节点已经取代了自己
-	// grandson.parent = brnode    //这里需要更新吗？？？？
+
 	//--------------------------------------------
 	//根节点是否被换了???
 	if parent == nil {
@@ -202,6 +203,10 @@ func (brtree *BRTree) insertCheck(pnode *BRNode) {
 		brtree.root.color = BLACK
 		return
 	}
+
+	// p := pnode.getParent()
+	// for p != nil && p.color == RED {
+	// gparent := p.getParent()
 	//2.父节点是黑色直接添加(不用管)，红色接着处理
 	if pnode.parent.color == RED {
 		//2.1 父，叔叔节点不为空而且其颜色是红色 ,则将该父叔都改为黑色,将祖父改成红色
@@ -250,7 +255,7 @@ func (brtree *BRTree) insertCheck(pnode *BRNode) {
 						  /
 				        8,B
 					    /  \
-					   7,R   10,B/nil
+					   7,R   /nil
 					  /
 					pnode,R
 				*/
@@ -260,13 +265,14 @@ func (brtree *BRTree) insertCheck(pnode *BRNode) {
 				         /   \
 				     pnode,R  8,R
 				               \
-				             10,B/nil
+				             /nil
 				*/
 				pnode.parent.color = BLACK
 				pnode.getGrandParent().color = RED
 				brtree.rotateRight(pnode.getGrandParent())
+
 			} else if !isLeft && !isParentLeft {
-				//不是左子树，父亲也不是左子树
+				//2.2.2 不是左子树，父亲也不是左子树
 				/*
 						  7,B
 					      /  \
@@ -279,36 +285,68 @@ func (brtree *BRTree) insertCheck(pnode *BRNode) {
 				brtree.rotateLeft(pnode.getGrandParent())
 
 			} else if isLeft && !isParentLeft {
-				//是左子树，但父亲不是左子树
+				//2.2.3 是左子树，但父亲不是左子树
 				/*
 						8,B
 					    /  \
 					6,B/nil   10,R
 					        /
-					       pnode，R
+					      pnode，R
+				*/
+				/*
+						pnode,R
+					    /  \
+					6,B/nil  8,B
+					            \
+					            10,R
+				*/
+				brtree.rotateRight(pnode.parent)
+				//实际上变成了2.2.2
+				brtree.rotateLeft(pnode.parent) //pnode现在在原先pnode的父节点位置
+				pnode.color = BLACK
+				pnode.left.color = RED
+				pnode.right.color = RED
+				// tmp := pnode.getParent() //再交换新的pnode和其父节点
+				// pnode.parent = pnode
+				// pnode = tmp
+			} else if !isLeft && isParentLeft {
+				//2.2.4不是左子树，但父亲是左子树
+				/*
+							 \
+					        8,B
+						    /  \
+						   7,R   10,B/nil
+						      \
+						      pnode，R
+				*/
+				//==>
+				/*
+						 8，B
+					    /    \
+					  pnode,R  10,B/nil
+					  /
+					7,R
+				*/
+				/*
+						 pnode，R
+					    /    \
+					   8,B   10,B/nil
+					  /
+					7,R
 				*/
 
-				brtree.rotateRight(pnode.parent)
 				brtree.rotateLeft(pnode.parent)
-				pnode.color = BLACK
-				pnode.left.color = RED
-				pnode.right.color = RED
-			} else if !isLeft && isParentLeft {
-				//不是左子树，但父亲是左子树
-				/*
-						8,B
-					    /  \
-					   7,R   10,B/nil
-					      \
-					      2,pnode
-				*/
-				brtree.rotateLeft(pnode.parent)
+				//实际上变成了2.2.1
 				brtree.rotateRight(pnode.parent)
 				pnode.color = BLACK
 				pnode.left.color = RED
 				pnode.right.color = RED
+				// tmp := pnode.getParent()
+				// pnode.parent = pnode
+				// pnode = tmp
 			}
 		}
+		// }
 	}
 }
 
@@ -316,7 +354,11 @@ func PreOrderTraverse(root *BRNode) {
 	if root == nil {
 		return
 	}
-	fmt.Printf("val:%v,color:%v,", root.val, root.color)
+	c := "BLACK"
+	if root.color {
+		c = "RED"
+	}
+	fmt.Printf("val:%v,color:%v,", root.val, c)
 	PreOrderTraverse(root.left)
 	PreOrderTraverse(root.right)
 }
@@ -325,18 +367,22 @@ func InOrderTraverse(root *BRNode) {
 		return
 	}
 
-	PreOrderTraverse(root.left)
-	fmt.Printf("val:%v,color:%v", root.val, root.color)
-	PreOrderTraverse(root.right)
+	InOrderTraverse(root.left)
+	c := "BLACK"
+	if root.color {
+		c = "RED"
+	}
+	fmt.Printf("val:%v,color:%v,", root.val, c)
+	InOrderTraverse(root.right)
 }
 func PostOrderTraverse(root *BRNode) {
 	if root == nil {
 		return
 	}
 
-	PreOrderTraverse(root.left)
+	PostOrderTraverse(root.left)
 
-	PreOrderTraverse(root.right)
+	PostOrderTraverse(root.right)
 	fmt.Printf("val:%v,color:%v", root.val, root.color)
 }
 
@@ -346,13 +392,25 @@ func buildBlackRedTree() {
 	tnode2 := &BRNode{val: 6}
 	tnode3 := &BRNode{val: 15}
 	tnode4 := &BRNode{val: 11}
-	tnode5 := &BRNode{val: 19}
+	// // tnode5 := &BRNode{val: 19}
 	tnode6 := &BRNode{val: 8}
+	tnode7 := &BRNode{val: 4}
+	tnode8 := &BRNode{val: 2}
+	tnode9 := &BRNode{val: 1}
+	tnode10 := &BRNode{val: 0}
 	btree.insertNode(tnode)
 	btree.insertNode(tnode2)
 	btree.insertNode(tnode3)
 	btree.insertNode(tnode4)
-	btree.insertNode(tnode5)
+	// // btree.insertNode(tnode5)
 	btree.insertNode(tnode6)
+	btree.insertNode(tnode7)
+	btree.insertNode(tnode8)
+	btree.insertNode(tnode9)
+	btree.insertNode(tnode10)
 	PreOrderTraverse(btree.root)
+	fmt.Println("\n")
+	InOrderTraverse(btree.root)
+	fmt.Println("\n")
+
 }
