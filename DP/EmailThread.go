@@ -24,10 +24,11 @@ func emailThread(s []string) [][]int {
 	for i := 0; i < len(s); i++ {
 		x := strings.Split(s[i], ",")
 		from := x[0]
-		to := x[1]
+		// to := x[1]
 		_, ok := visited[from]
 		if !ok {
 
 		}
 	}
+	return res
 }

@@ -13,16 +13,16 @@ func slideWindow(nums []int, size int) []int {
 	dq := make([]int, 0) //save nums index
 	//size is the window's length
 	for i := 0; i < len(nums); i++ {
-		for len(dq) != 0 && nums[dq[len(dq)-1]] <= nums[i] {
+		for len(dq) != 0 && nums[dq[len(dq)-1]] <= nums[i] { //found larger one!,repeatedly until empty
 			dq = dq[:len(dq)-1] //pop back
 
 		}
-		for len(dq) != 0 && i-dq[0]+1 > size {
+		if len(dq) != 0 && i-dq[0]+1 > size { // dq[0]==i-size,check if window has passed
 
 			dq = dq[1:] //pop front
 		}
 		dq = append(dq, i)
-		if size != 0 && i+1 >= size {
+		if i+1 >= size { //window begins to slide
 			res = append(res, nums[dq[0]])
 		}
 	}

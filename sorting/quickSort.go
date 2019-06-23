@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 //1. recursive version
 func QuickSort(s []int, low int, high int) {
 
@@ -16,14 +18,14 @@ func QuickSort(s []int, low int, high int) {
 		QuickSort(s, low, pivot-1)
 		low = pivot + 1
 	}
-
+	fmt.Println(s)
 }
 
 func Partition(s *[]int, low int, high int) int {
 	var pivotkey int
 	pivotkey = (*s)[low] //bottleneck
 	for low < high {
-		for low < high && (*s)[high] >= pivotkey {
+		for low < high && (*s)[high] >= pivotkey { //to find an element<pivotkey
 			high--
 		}
 		(*s)[low], (*s)[high] = (*s)[high], (*s)[low]

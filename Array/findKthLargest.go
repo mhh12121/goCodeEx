@@ -32,7 +32,7 @@ func findKthLargest(nums []int, k int) int {
 		tmpArr[i] = nums[i]
 	}
 	heap.Init(&tmpArr)
-	for i := 0; i < len(nums); i++ {
+	for i := 0; i < k; i++ {
 		x = (heap.Pop(&tmpArr)).(int)
 	}
 	return x
