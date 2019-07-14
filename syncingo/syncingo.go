@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 //chan.close()
 func fibonacci(n int, c chan int) {
 	x, y := 0, 1
@@ -37,27 +35,27 @@ func fibonacci(n int, c chan int) {
 // }
 
 //-------------------------
-func main() {
-	// c1 := make(chan int, 2)
-	// c2 := make(chan int, 2)
-	// maximum := 5
-	// go func() {
-	// 	for i := 0; i < maximum; i++ {
+// func main() {
+// c1 := make(chan int, 2)
+// c2 := make(chan int, 2)
+// maximum := 5
+// go func() {
+// 	for i := 0; i < maximum; i++ {
 
-	// 	}
-	// }()
+// 	}
+// }()
 
-	// fibonacci()
+// fibonacci()
 
-	// go teller()
-	Deposit(100)
-	Withdraw(10)
-	Withdraw(20)
-	Withdraw(50)
-	fmt.Println(balance)
+// // go teller()
+// Deposit(100)
+// Withdraw(10)
+// Withdraw(20)
+// Withdraw(50)
+// fmt.Println(balance)
 
-	// Withdraw(10)
-}
+// Withdraw(10)
+// }
 
 //another
 // func fibonacci() {

@@ -203,10 +203,6 @@ func (brtree *BRTree) insertCheck(pnode *BRNode) {
 		brtree.root.color = BLACK
 		return
 	}
-
-	// p := pnode.getParent()
-	// for p != nil && p.color == RED {
-	// gparent := p.getParent()
 	//2.父节点是黑色直接添加(不用管)，红色接着处理
 	if pnode.parent.color == RED {
 		//2.1 父，叔叔节点不为空而且其颜色是红色 ,则将该父叔都改为黑色,将祖父改成红色
@@ -306,9 +302,7 @@ func (brtree *BRTree) insertCheck(pnode *BRNode) {
 				pnode.color = BLACK
 				pnode.left.color = RED
 				pnode.right.color = RED
-				// tmp := pnode.getParent() //再交换新的pnode和其父节点
-				// pnode.parent = pnode
-				// pnode = tmp
+
 			} else if !isLeft && isParentLeft {
 				//2.2.4不是左子树，但父亲是左子树
 				/*
@@ -341,13 +335,132 @@ func (brtree *BRTree) insertCheck(pnode *BRNode) {
 				pnode.color = BLACK
 				pnode.left.color = RED
 				pnode.right.color = RED
-				// tmp := pnode.getParent()
-				// pnode.parent = pnode
-				// pnode = tmp
+
 			}
 		}
-		// }
+
 	}
+}
+
+/*
+要删除的是n，有一个子节点（这里是左子节点）
+	 					n
+			    /    \
+			   S   	nil
+			  /  \
+			 Sl		SR
+1. 将S.parent=n.Parent
+2. 如果n=n.Parent.left,让n.Parent.left=S,右边同理
+
+要删除的是n，有两个子节点
+	 					n
+			    /    \
+			   S   	  X
+			  /  \   /  \
+			 Sl	 SR  XL  XR
+
+1. 选择后继节点，即X作为替换
+2. 找到n的右子树X的最左非空子树，这里是XL，将XL的值复制到n，将删除的节点改为XL，
+就可以转换成节点包含0个或1个节点的问题了
+
+*/
+
+//二叉查找树删除修正
+func (brtree *BRTree) removeNode(n *BRNode) { //传入数据和之前一样可以构造一个brnode对象进来
+	//
+	var child, parent *BRNode
+	var color bool
+	if n.left != nil && n.right != nil {
+		replace := n
+		replace = n.right         //被删除的后继节点
+		for replace.left != nil { //得到最左的子节点
+			replace = replace.left
+		}
+		//此时实际上是要删除掉replace节点
+		if n.parent != nil { //not root node
+			if n.parent.left == n { //分别连接被删除节点的父节点和被删除节点的后继节点的最左的子节点
+				n.parent.left = replace
+			} else if n.parent.right == n {
+				n.parent.right = replace
+			}
+		} else {
+			brtree.root = replace
+		}
+
+		child = replace.right
+		parent = replace.parent
+		color = replace.color
+
+		/*
+
+		 */
+		if parent == n {
+			//删除节点是它后继节点的父节点
+			parent = replace
+		} else {
+
+			if child != nil {
+				//child 不为空
+				child.parent = parent
+			}
+			parent.left = child     //把child节点放在parent的左节点处
+			replace.right = n.right //被删除的节点右节点由replace节点指向
+			n.right = replace
+		}
+		replace.parent = n.parent
+		replace.color = n.color
+		replace.left = n.left
+		n.left.parent = replace
+		if color == BLACK {
+			removeCheck(child, parent)
+		}
+		n = nil
+		return
+	}
+
+	if n.left != nil { //只有左节点非空
+		child = n.left
+	} else { //右节点非空
+		child = n.right
+	}
+
+	parent = n.parent
+	color = n.color
+	if child != nil {
+		child.parent = parent
+	}
+
+	if parent != nil {
+		if parent.left == n {
+			parent.left = child
+		} else {
+			parent.right = child
+		}
+	} else {
+		brtree.root = child
+	}
+
+	if color == BLACK {
+		removeCheck(child, parent)
+	}
+	n = nil
+
+}
+
+//颜色删除修正
+func removeCheck(n *BRNode, parent *BRNode) {
+
+}
+
+func Search(root *BRNode, data int) *BRNode {
+	return nil
+}
+func (brtree *BRTree) RemoveKey(data int) {
+	node := Search(brtree.root, data)
+	if node == nil {
+		brtree.removeNode(node)
+	}
+
 }
 
 func PreOrderTraverse(root *BRNode) {

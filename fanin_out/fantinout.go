@@ -2,6 +2,10 @@ package main
 
 import "sync"
 
+type Image struct {
+	name string
+}
+
 //Convert a list of input (*Image) to a channel that emits the data in the list
 func GenReq(images ...*Image) <-chan *Image {
 	out := make(chan *Image)
@@ -14,8 +18,8 @@ func GenReq(images ...*Image) <-chan *Image {
 	return out
 }
 
-//FunOut: receives the input from a channel and return a channel that emits the result.
-func FunOut(in <-chan *Image) <-chan *Image {
+//FanOut: receives the input from a channel and return a channel that emits the result.
+func FanOut(in <-chan *Image) <-chan *Image {
 	out := make(chan *Image)
 	go func() {
 		for n := range in {
