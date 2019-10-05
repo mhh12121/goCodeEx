@@ -5,35 +5,48 @@ import "fmt"
 //1. recursive version
 func QuickSort(s []int, low int, high int) {
 
-	var pivot int
+	// var pivot int
 	// if low < high {
 	// 	// pivot = Partition(s, low, high)
-	// 	pivot = PartitionMediumThree(s, low, high)
+	// 	pivot := PartitionMediumThree(s, low, high)
 	// 	QuickSort(s, low, pivot-1)
 	// 	QuickSort(s, pivot+1, high)
 	// }
 
-	for low < high {
-		pivot = Partition(&s, low, high)
+	if low < high {
+		pivot := Partition(s, low, high)
+
 		QuickSort(s, low, pivot-1)
-		low = pivot + 1
+		QuickSort(s, pivot+1, high)
 	}
-	fmt.Println(s)
+
 }
 
-func Partition(s *[]int, low int, high int) int {
+func Partition(s []int, low int, high int) int {
 	var pivotkey int
-	pivotkey = (*s)[low] //bottleneck
+	pivotkey = s[low] //bottleneck
+	tempHigh := high
+	tempLow := low
 	for low < high {
-		for low < high && (*s)[high] >= pivotkey { //to find an element<pivotkey
+		for low < high && s[high] >= pivotkey { //to find an element<pivotkey
 			high--
 		}
-		(*s)[low], (*s)[high] = (*s)[high], (*s)[low]
-		for low < high && (*s)[low] <= pivotkey {
+
+		s[low], s[high] = s[high], s[low]
+		if tempHigh == high { //reduce useless loop
+			return low
+		}
+		for low < high && s[low] <= pivotkey {
 			low++
 		}
-		(*s)[low], (*s)[high] = (*s)[high], (*s)[low]
+		s[low], s[high] = s[high], s[low]
+		if tempLow == low {
+			return low
+		}
+		fmt.Println(s)
+
 	}
+
 	return low
 }
 
@@ -98,7 +111,7 @@ func QuickSortIterative(nums []int) []int {
 		low := stack[top]
 		top--
 
-		p := Partition(&nums, low, high)
+		p := Partition(nums, low, high)
 
 		if p-1 > low {
 			top++
@@ -115,4 +128,30 @@ func QuickSortIterative(nums []int) []int {
 		}
 	}
 	return nums
+}
+
+func QuickSort2(arr []int) {
+	if len(arr) <= 1 {
+		return
+	}
+	pivot := arr[0] //在low上
+	i := 1
+	low, high := 0, len(arr)-1
+	// mid := (low + high) >> 1
+	for low < high {
+		fmt.Println(arr)
+		if arr[i] > pivot {
+			arr[i], arr[high] = arr[high], arr[i]
+			high--
+		} else {
+			arr[i], arr[low] = arr[low], arr[i]
+			low++
+			i++
+		}
+
+	}
+	arr[low] = pivot
+	QuickSort2(arr[:low])
+	QuickSort2(arr[low+1:])
+
 }
